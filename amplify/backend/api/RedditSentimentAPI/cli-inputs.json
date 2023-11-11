@@ -1,0 +1,18 @@
+{
+  "version": 1,
+  "paths": {
+    "/posts": {
+      "name": "/posts",
+      "lambdaFunction": "PostsAPILambda",
+      "permissions": {
+        "setting": "private",
+        "auth": [
+          "create",
+          "read",
+          "update",
+          "delete"
+        ]
+      }
+    }
+  }
+}
