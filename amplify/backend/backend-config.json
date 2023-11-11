@@ -9,6 +9,14 @@
           ],
           "category": "function",
           "resourceName": "PostsAPILambda"
+        },
+        {
+          "attributes": [
+            "Name",
+            "Arn"
+          ],
+          "category": "function",
+          "resourceName": "TopicsAPILambda"
         }
       ],
       "providerPlugin": "awscloudformation",
@@ -73,6 +81,22 @@
       ],
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
+    },
+    "TopicsAPILambda": {
+      "build": true,
+      "dependsOn": [
+        {
+          "attributes": [
+            "Name",
+            "Arn",
+            "StreamArn"
+          ],
+          "category": "storage",
+          "resourceName": "Users"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
     }
   },
   "parameters": {
@@ -91,10 +115,46 @@
           "resourceName": "PostsAPILambda"
         }
       ]
+    },
+    "AMPLIFY_function_PostsTableTrigger_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "PostsTableTrigger"
+        }
+      ]
+    },
+    "AMPLIFY_function_PostsTableTrigger_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "PostsTableTrigger"
+        }
+      ]
+    },
+    "AMPLIFY_function_TopicsAPILambda_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "TopicsAPILambda"
+        }
+      ]
+    },
+    "AMPLIFY_function_TopicsAPILambda_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "TopicsAPILambda"
+        }
+      ]
     }
   },
   "storage": {
     "Posts": {
+      "providerPlugin": "awscloudformation",
+      "service": "DynamoDB"
+    },
+    "Users": {
       "providerPlugin": "awscloudformation",
       "service": "DynamoDB"
     }

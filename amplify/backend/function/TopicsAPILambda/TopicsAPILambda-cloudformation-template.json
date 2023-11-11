@@ -16,17 +16,17 @@
     "s3Key": {
       "Type": "String"
     },
-    "storagePostsName": {
+    "storageUsersName": {
       "Type": "String",
-      "Default": "storagePostsName"
+      "Default": "storageUsersName"
     },
-    "storagePostsArn": {
+    "storageUsersArn": {
       "Type": "String",
-      "Default": "storagePostsArn"
+      "Default": "storageUsersArn"
     },
-    "storagePostsStreamArn": {
+    "storageUsersStreamArn": {
       "Type": "String",
-      "Default": "storagePostsStreamArn"
+      "Default": "storageUsersStreamArn"
     }
   },
   "Conditions": {
@@ -59,12 +59,12 @@
         "FunctionName": {
           "Fn::If": [
             "ShouldNotCreateEnvResources",
-            "PostsTableTrigger",
+            "TopicsAPILambda",
             {
               "Fn::Join": [
                 "",
                 [
-                  "PostsTableTrigger",
+                  "TopicsAPILambda",
                   "-",
                   {
                     "Ref": "env"
@@ -82,14 +82,14 @@
             "REGION": {
               "Ref": "AWS::Region"
             },
-            "STORAGE_POSTS_NAME": {
-              "Ref": "storagePostsName"
+            "STORAGE_USERS_NAME": {
+              "Ref": "storageUsersName"
             },
-            "STORAGE_POSTS_ARN": {
-              "Ref": "storagePostsArn"
+            "STORAGE_USERS_ARN": {
+              "Ref": "storageUsersArn"
             },
-            "STORAGE_POSTS_STREAMARN": {
-              "Ref": "storagePostsStreamArn"
+            "STORAGE_USERS_STREAMARN": {
+              "Ref": "storageUsersStreamArn"
             }
           }
         },
@@ -110,12 +110,12 @@
         "RoleName": {
           "Fn::If": [
             "ShouldNotCreateEnvResources",
-            "swen514LambdaRole7917ae1e",
+            "swen514LambdaRole002aa50a",
             {
               "Fn::Join": [
                 "",
                 [
-                  "swen514LambdaRole7917ae1e",
+                  "swen514LambdaRole002aa50a",
                   "-",
                   {
                     "Ref": "env"
@@ -223,14 +223,14 @@
               ],
               "Resource": [
                 {
-                  "Ref": "storagePostsArn"
+                  "Ref": "storageUsersArn"
                 },
                 {
                   "Fn::Join": [
                     "/",
                     [
                       {
-                        "Ref": "storagePostsArn"
+                        "Ref": "storageUsersArn"
                       },
                       "index/*"
                     ]
@@ -241,32 +241,6 @@
           ]
         }
       }
-    },
-    "CustomLambdaExecutionPolicy": {
-      "Type": "AWS::IAM::Policy",
-      "Properties": {
-        "PolicyName": "custom-lambda-execution-policy",
-        "PolicyDocument": {
-          "Version": "2012-10-17",
-          "Statement": [
-            {
-              "Effect": "Allow",
-              "Action": [
-                "comprehend:*"
-              ],
-              "Resource": [
-                "*"
-              ]
-            }
-          ]
-        },
-        "Roles": [
-          {
-            "Ref": "LambdaExecutionRole"
-          }
-        ]
-      },
-      "DependsOn": "LambdaExecutionRole"
     }
   },
   "Outputs": {

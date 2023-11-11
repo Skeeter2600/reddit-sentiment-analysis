@@ -1,6 +1,7 @@
 [
   {
-    "Action": [],
-    "Resource": []
+    "Effect": "Allow",
+    "Action": ["comprehend:*"],
+    "Resource": ["*"]
   }
 ]

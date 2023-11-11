@@ -13,6 +13,19 @@
           "delete"
         ]
       }
+    },
+    "/topics": {
+      "name": "/topics",
+      "lambdaFunction": "TopicsAPILambda",
+      "permissions": {
+        "setting": "private",
+        "auth": [
+          "create",
+          "read",
+          "update",
+          "delete"
+        ]
+      }
     }
   }
 }
