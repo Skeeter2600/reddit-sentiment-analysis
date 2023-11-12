@@ -27,6 +27,12 @@
     "storagePostsStreamArn": {
       "Type": "String",
       "Default": "storagePostsStreamArn"
+    },
+    "redditClientId": {
+      "Type": "String"
+    },
+    "redditClientSecret": {
+      "Type": "String"
     }
   },
   "Conditions": {
@@ -90,6 +96,12 @@
             },
             "STORAGE_POSTS_STREAMARN": {
               "Ref": "storagePostsStreamArn"
+            },
+            "REDDIT_CLIENT_ID": {
+              "Ref": "redditClientId"
+            },
+            "REDDIT_CLIENT_SECRET": {
+              "Ref": "redditClientSecret"
             }
           }
         },

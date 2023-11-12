@@ -11,9 +11,10 @@ table = dynamodb.Table(f"{table_name}-{env}")
 
 
 def handler(event, context):
+    print(json.dumps(event))
     # loop through records provided by the DynamoDB Stream
     for record in event["Records"]:
-        if record["eventName"] == "INSERT":
+        if record["eventName"] == "INSERT" or record["eventName"] == "MODIFY":
             new_image = record["dynamodb"]["NewImage"]
 
             # retrieve relevant data from the new image
@@ -29,6 +30,7 @@ def handler(event, context):
                 full_text = post_title
 
             # use Comprehend to perform sentiment analysis
+            print(f"analyzing {post_title}")
             sentiment_response = comprehend.detect_sentiment(
                 Text=full_text, LanguageCode="en"
             )

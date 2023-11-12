@@ -26,7 +26,7 @@
     },
     "storagePostsStreamArn": {
       "Type": "String",
-      "Default": "storagePostsStreamArn"
+      "Default": "storagePostsArn"
     }
   },
   "Conditions": {
@@ -267,6 +267,59 @@
         ]
       },
       "DependsOn": "LambdaExecutionRole"
+    },
+    "PostsTriggerPolicy": {
+      "DependsOn": [
+        "LambdaExecutionRole"
+      ],
+      "Type": "AWS::IAM::Policy",
+      "Properties": {
+        "PolicyName": "lambda-trigger-policy-Posts",
+        "Roles": [
+          {
+            "Ref": "LambdaExecutionRole"
+          }
+        ],
+        "PolicyDocument": {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Effect": "Allow",
+              "Action": [
+                "dynamodb:DescribeStream",
+                "dynamodb:GetRecords",
+                "dynamodb:GetShardIterator",
+                "dynamodb:ListStreams"
+              ],
+              "Resource": [
+                {
+                  "Ref": "storagePostsStreamArn"
+                }
+              ]
+            }
+          ]
+        }
+      }
+    },
+    "PostsTrigger": {
+      "Type": "AWS::Lambda::EventSourceMapping",
+      "DependsOn": [
+        "PostsTriggerPolicy"
+      ],
+      "Properties": {
+        "BatchSize": 100,
+        "Enabled": true,
+        "EventSourceArn": {
+          "Ref": "storagePostsStreamArn"
+        },
+        "FunctionName": {
+          "Fn::GetAtt": [
+            "LambdaFunction",
+            "Arn"
+          ]
+        },
+        "StartingPosition": "LATEST"
+      }
     }
   },
   "Outputs": {
