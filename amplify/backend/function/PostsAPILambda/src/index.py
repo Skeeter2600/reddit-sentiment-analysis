@@ -1,8 +1,10 @@
+import os
 import json
 import boto3
 import praw
-import os
 
+
+# default headers
 headers = {
     "Access-Control-Allow-Headers": "*",
     "Access-Control-Allow-Origin": "*",
@@ -38,15 +40,15 @@ def get(event, context):
         "headers": headers,
         "body": json.dumps(
             {
-                "error": "must specify 'topic', 'subreddit', and 'limit' parameters. limit must be an integer."
+                "Error": "Must specify the 'topic', 'subreddit', and 'limit' parameters. Note 'limit' must be an integer."
             }
         ),
     }
 
+    parameters = {"topic": None, "subreddit": None}
+
     if "queryStringParameters" not in event:
         return bad_parameters_response
-
-    parameters = {"topic": None, "subreddit": None}
 
     for param in parameters:
         if param not in event["queryStringParameters"]:
@@ -55,11 +57,11 @@ def get(event, context):
             parameters[param] = event["queryStringParameters"][param]
 
     posts = table.scan(
-        FilterExpression="contains(topics, :topic) and subreddit = :subreddit",
         ExpressionAttributeValues={
             ":topic": parameters["topic"],
             ":subreddit": parameters["subreddit"],
         },
+        FilterExpression="contains(topics, :topic) and subreddit = :subreddit",
     )["Items"]
 
     return {
@@ -127,14 +129,14 @@ def upload_to_dynamodb(post, topic):
         }
 
         table.put_item(Item=data, ConditionExpression="attribute_not_exists(postId)")
-    except Exception as existsException:
+    except Exception as exists_exception:
         try:
             table.update_item(
                 Key={"postId": post.id},
-                UpdateExpression="SET Topics = list_append(topics, :topics)",
-                ConditionExpression="NOT contains(topics, :topic)",
                 ExpressionAttributeValues={":topics": [topic], ":topic": topic},
+                ConditionExpression="NOT contains(topics, :topic)",
+                UpdateExpression="SET topics = list_append(topics, :topics)",
                 ReturnValues="UPDATED_NEW",
             )
-        except Exception as inListException:
-            print(str(inListException))
+        except Exception as in_list_exception:
+            print(str(in_list_exception))

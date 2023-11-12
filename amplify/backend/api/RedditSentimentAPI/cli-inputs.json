@@ -26,6 +26,19 @@
           "delete"
         ]
       }
+    },
+    "/users": {
+      "name": "/users",
+      "lambdaFunction": "UsersAPILambda",
+      "permissions": {
+        "setting": "private",
+        "auth": [
+          "create",
+          "read",
+          "update",
+          "delete"
+        ]
+      }
     }
   }
 }

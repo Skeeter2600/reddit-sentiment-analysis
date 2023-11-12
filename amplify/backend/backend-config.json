@@ -17,6 +17,14 @@
           ],
           "category": "function",
           "resourceName": "TopicsAPILambda"
+        },
+        {
+          "attributes": [
+            "Name",
+            "Arn"
+          ],
+          "category": "function",
+          "resourceName": "UsersAPILambda"
         }
       ],
       "providerPlugin": "awscloudformation",
@@ -97,6 +105,22 @@
       ],
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
+    },
+    "UsersAPILambda": {
+      "build": true,
+      "dependsOn": [
+        {
+          "attributes": [
+            "Name",
+            "Arn",
+            "StreamArn"
+          ],
+          "category": "storage",
+          "resourceName": "Users"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
     }
   },
   "parameters": {
@@ -161,6 +185,22 @@
         {
           "category": "function",
           "resourceName": "TopicsAPILambda"
+        }
+      ]
+    },
+    "AMPLIFY_function_UsersAPILambda_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "UsersAPILambda"
+        }
+      ]
+    },
+    "AMPLIFY_function_UsersAPILambda_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "UsersAPILambda"
         }
       ]
     }
