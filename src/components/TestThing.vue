@@ -3,20 +3,20 @@ import { ref } from 'vue'
 import { API } from 'aws-amplify'
 import type { Post } from '@/models/post.model'
 
-const email = ref('')
 const topic = ref('')
 const subreddit = ref('')
 const posts = ref<Post[]>([])
 
 async function get() {
   try {
-    const response = await API.get('RedditSentimentAPI', '/topics', {
+    const response = await API.get('RedditSentimentAPI', '/posts', {
       queryStringParameters: {
-        email: email.value,
         topic: topic.value,
         subreddit: subreddit.value
       }
     })
+
+    posts.value = response as Post[]
 
     console.log(response)
   } catch (error) {
@@ -26,13 +26,17 @@ async function get() {
 </script>
 
 <template>
-  <input v-model="email" />
+  <label>Topic:</label>
   <input v-model="topic" />
+
+  <label>Subreddit:</label>
   <input v-model="subreddit" />
+
   <button @click="get">Get Posts</button>
   <ul>
-    <li v-for="post in posts" :key="post.postId">
-      {{ post.title }}
-    </li>
+    <div v-for="post in posts" :key="post.postId">
+      <h2>{{ post.title }}</h2>
+      <p>{{ post.sentiment }}</p>
+    </div>
   </ul>
 </template>
