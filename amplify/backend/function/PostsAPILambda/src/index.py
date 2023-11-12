@@ -136,7 +136,6 @@ def upload_to_dynamodb(post, topic):
                 ExpressionAttributeValues={":topics": [topic], ":topic": topic},
                 ConditionExpression="NOT contains(topics, :topic)",
                 UpdateExpression="SET topics = list_append(topics, :topics)",
-                ReturnValues="UPDATED_NEW",
             )
         except Exception as in_list_exception:
             print(str(in_list_exception))

@@ -45,7 +45,6 @@ def get(event, context):
             parameters[param] = event["queryStringParameters"][param]
 
     user = table.get_item(Key={"email": parameters["email"]})["Item"]
-    print(user, user == None)
 
     if user == None:
         return {
@@ -55,7 +54,6 @@ def get(event, context):
         }
 
     topics = user["topics"]
-    print(json.dumps(topics))
 
     return {
         "statusCode": 200,
@@ -105,6 +103,44 @@ def post(event, context):
 
 
 def delete(event, context):
+    bad_parameters_response = {
+        "statusCode": 400,
+        "headers": headers,
+        "body": json.dumps(
+            {"Error": "Must specify the 'email', 'topic', and 'subreddit' parameters."}
+        ),
+    }
+
+    parameters = {"email": None, "topic": None, "subreddit": None}
+
+    if "queryStringParameters" not in event:
+        return bad_parameters_response
+
+    for param in parameters:
+        if param not in event["queryStringParameters"]:
+            return bad_parameters_response
+        else:
+            parameters[param] = event["queryStringParameters"][param]
+
+    user = table.get_item(Key={"email": parameters["email"]})["Item"]
+
+    if user == None:
+        print("User does not exist.")
+    else:
+        topics = user["topics"]
+
+        for index, item in enumerate(topics):
+            if item["topic"] == parameters["topic"] and item["subreddit"]:
+                break
+        else:
+            index = -1
+
+        if index != -1:
+            table.update_item(
+                Key={"email": parameters["email"]},
+                UpdateExpression=f"REMOVE topics[{index}]",
+            )
+
     return {
         "statusCode": 200,
         "headers": headers,
