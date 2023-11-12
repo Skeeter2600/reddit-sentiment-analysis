@@ -2,13 +2,13 @@ import os
 import json
 import boto3
 
+
 headers = {
     "Access-Control-Allow-Headers": "*",
     "Access-Control-Allow-Origin": "*",
     "Access-Control-Allow-Methods": "OPTIONS,POST,GET",
 }
 
-# DynamoDB init
 dynamodb = boto3.resource("dynamodb", region_name=os.environ["REGION"])
 table_name = os.environ["STORAGE_USERS_NAME"]
 table = dynamodb.Table(table_name)
@@ -51,10 +51,12 @@ def post(event, context):
             parameters[param] = event["queryStringParameters"][param]
 
     try:
-        table.put_item(Item={"email": parameters["email"]}, ConditionExpression="attribute_not_exists(email)")
+        table.put_item(
+            Item={"email": parameters["email"]},
+            ConditionExpression="attribute_not_exists(email)",
+        )
     except Exception as e:
         print("User already exists.")
-        print(str(e))
 
     return {
         "statusCode": 200,
