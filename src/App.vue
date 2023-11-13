@@ -1,28 +1,39 @@
 <script setup lang="ts">
-import SubredditBar from './components/SubredditBar.vue';
+import SubredditBar from './components/SubredditBar.vue'
+import { Authenticator } from '@aws-amplify/ui-vue'
+import { Auth } from 'aws-amplify'
 
 function goBack() {
-  window.history.back();
+  window.history.back()
+}
+
+function signOut() {
+  try {
+    Auth.signOut()
+  } catch (error) {
+    console.error(error)
+  }
 }
 </script>
 
 <template>
-  <aside>
-    <div class="bar">
-      <button @click="goBack">
-        &#x2190;
-      </button>
-    </div>
+  <authenticator>
+    <aside>
+      <div class="bar">
+        <button @click="goBack">&#x2190;</button>
+      </div>
 
-    <SubredditBar />
-  </aside>
-  <main>
-    <header>
-      <h1>Dashboard</h1>
-    </header>
+      <SubredditBar />
+    </aside>
+    <main>
+      <header>
+        <h1>Dashboard</h1>
+        <button @click="signOut">Sign Out</button>
+      </header>
 
-    <RouterView />
-  </main>
+      <RouterView />
+    </main>
+  </authenticator>
 </template>
 
 <style lang="scss">
@@ -80,6 +91,5 @@ aside {
       }
     }
   }
-
 }
 </style>
