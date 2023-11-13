@@ -5,7 +5,7 @@ import TestThing from '../components/TestThing.vue'
 
 <template>
   <main>
-    <TheWelcome />
-    <TestThing />
+    <h2>Please select a subreddit to view</h2>
+    <!-- <TestThing /> -->
   </main>
 </template>
