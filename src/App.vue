@@ -1,39 +1,48 @@
 <script setup lang="ts">
 import SubredditBar from './components/SubredditBar.vue'
-import { Authenticator } from '@aws-amplify/ui-vue'
-import { Auth } from 'aws-amplify'
+import { Authenticator, useAuthenticator } from '@aws-amplify/ui-vue'
+import { ref } from 'vue'
+
+const showAuthBox = ref(false)
+const auth = useAuthenticator()
 
 function goBack() {
   window.history.back()
 }
 
-function signOut() {
-  try {
-    Auth.signOut()
-  } catch (error) {
-    console.error(error)
-  }
+function showAuthModal() {
+  showAuthBox.value = true
+}
+
+function hideAuthModal() {
+  showAuthBox.value = false
 }
 </script>
 
 <template>
-  <authenticator>
-    <aside>
-      <div class="bar">
-        <button @click="goBack">&#x2190;</button>
-      </div>
-
-      <SubredditBar />
-    </aside>
-    <main>
-      <header>
-        <h1>Dashboard</h1>
-        <button @click="signOut">Sign Out</button>
-      </header>
-
-      <RouterView />
-    </main>
+  <authenticator variation="modal" v-if="showAuthBox">
+    <template v-slot:footer>
+      <button @click="hideAuthModal()" style="width: 100%">CLOSE</button>
+    </template>
   </authenticator>
+
+  <aside>
+    <div class="bar">
+      <button @click="goBack">&#x2190;</button>
+    </div>
+
+    <SubredditBar />
+  </aside>
+  <main>
+    <header>
+      <h1>Dashboard</h1>
+      <h3 v-if="auth.user?.username">{{ auth.user?.attributes.email }}</h3>
+      <button v-if="auth.authStatus === 'authenticated'" @click="auth.signOut()">Sign Out</button>
+      <button v-else @click="showAuthModal">Sign In</button>
+    </header>
+
+    <RouterView />
+  </main>
 </template>
 
 <style lang="scss">
