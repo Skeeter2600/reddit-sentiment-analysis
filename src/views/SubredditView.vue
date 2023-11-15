@@ -10,8 +10,9 @@ function reloadValues() {
   document.title = 'r/' + subreddit.value;
 }
 
-watch(() => route.params.subreddit,
-  newSubreddit => {
+watch(
+  () => route.params.subreddit,
+  (newSubreddit) => {
     subreddit.value = newSubreddit as string;
     reloadValues();
   }
@@ -21,6 +22,7 @@ onMounted(() => {
   reloadValues();
 });
 
+const topics = ref([]);
 </script>
 
 <template>

@@ -17,27 +17,35 @@ function showAuthModal() {
 function hideAuthModal() {
   showAuthBox.value = false;
 }
+
+// If this value changes, the page will update all of its contents
+const refresh = ref(0);
+
+function signOut() {
+  auth.signOut();
+  refresh.value++;
+}
 </script>
 
 <template>
-  <authenticator variation="modal" v-if="showAuthBox">
+  <Authenticator variation="modal" v-if="showAuthBox">
     <template v-slot:footer>
       <button @click="hideAuthModal()" style="width: 100%">CLOSE</button>
     </template>
-  </authenticator>
+  </Authenticator>
 
-  <aside>
+  <aside :key="refresh">
     <div class="bar">
       <button @click="goBack">&#x2190;</button>
     </div>
 
     <SubredditBar />
   </aside>
-  <main>
+  <main :key="refresh">
     <header>
       <h1>Dashboard</h1>
       <h3 v-if="auth.user?.username">{{ auth.user?.attributes?.email }}</h3>
-      <button v-if="auth.authStatus === 'authenticated'" @click="auth.signOut()">Sign Out</button>
+      <button v-if="auth.authStatus === 'authenticated'" @click="signOut">Sign Out</button>
       <button v-else @click="showAuthModal">Sign In</button>
     </header>
 
