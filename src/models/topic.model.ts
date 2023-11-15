@@ -1,4 +1,4 @@
 export interface Topic {
-  topic: String
-  subreddit: String
+  topic: string
+  subreddit: string
 }

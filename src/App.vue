@@ -2,6 +2,7 @@
 import SubredditBar from './components/SubredditBar.vue';
 import { Authenticator, useAuthenticator } from '@aws-amplify/ui-vue';
 import { ref } from 'vue';
+import '@progress/kendo-theme-default/dist/all.css';
 
 const showAuthBox = ref(false);
 const auth = useAuthenticator();

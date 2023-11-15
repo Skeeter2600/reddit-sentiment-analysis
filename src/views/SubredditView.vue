@@ -1,36 +1,26 @@
-<script setup lang="ts">
-import { onMounted, ref, watch } from 'vue';
+<script async setup lang="ts">
+import { ref, watch } from 'vue';
 import { useRoute } from 'vue-router';
+import SubredditView from './subreddit_view/SubredditView.vue';
 
 const route = useRoute();
 
 const subreddit = ref(route.params.subreddit as string);
 
-function reloadValues() {
-  document.title = 'r/' + subreddit.value;
-}
-
 watch(
   () => route.params.subreddit,
   (newSubreddit) => {
     subreddit.value = newSubreddit as string;
-    reloadValues();
   }
 );
-
-onMounted(() => {
-  reloadValues();
-});
-
-const topics = ref([]);
 </script>
 
 <template>
-  <title>{{ subreddit }}</title>
+  <Suspense :key="subreddit">
+    <SubredditView :subreddit="subreddit" />
 
-  <div class="greetings">
-    <h2>r/{{ subreddit }}</h2>
-  </div>
+    <template #fallback> <h2>Loading...</h2></template>
+  </Suspense>
 </template>
 
 <style scoped>
