@@ -1,1 +1,12 @@
 @import './base.css';
+
+/* This isn't styled by default for some reason */
+div[data-amplify-container=''] > button {
+  background-color: white;
+  padding: 10px 0;
+  cursor: pointer;
+}
+
+div[data-amplify-container=''] > button:hover {
+  background-color: #ddd;
+}

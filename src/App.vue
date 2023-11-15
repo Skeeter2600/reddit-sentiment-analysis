@@ -1,21 +1,21 @@
 <script setup lang="ts">
-import SubredditBar from './components/SubredditBar.vue'
-import { Authenticator, useAuthenticator } from '@aws-amplify/ui-vue'
-import { ref } from 'vue'
+import SubredditBar from './components/SubredditBar.vue';
+import { Authenticator, useAuthenticator } from '@aws-amplify/ui-vue';
+import { ref } from 'vue';
 
-const showAuthBox = ref(false)
-const auth = useAuthenticator()
+const showAuthBox = ref(false);
+const auth = useAuthenticator();
 
 function goBack() {
-  window.history.back()
+  window.history.back();
 }
 
 function showAuthModal() {
-  showAuthBox.value = true
+  showAuthBox.value = true;
 }
 
 function hideAuthModal() {
-  showAuthBox.value = false
+  showAuthBox.value = false;
 }
 </script>
 
@@ -36,7 +36,7 @@ function hideAuthModal() {
   <main>
     <header>
       <h1>Dashboard</h1>
-      <h3 v-if="auth.user?.username">{{ auth.user?.attributes.email }}</h3>
+      <h3 v-if="auth.user?.username">{{ auth.user?.attributes?.email }}</h3>
       <button v-if="auth.authStatus === 'authenticated'" @click="auth.signOut()">Sign Out</button>
       <button v-else @click="showAuthModal">Sign In</button>
     </header>
@@ -61,11 +61,30 @@ main {
     color: white;
     display: flex;
     align-items: center;
-    padding: 0 12px;
+    padding: 0 0 0 12px;
+    display: flex;
+    flex-direction: row;
 
     h1 {
+      flex: 1;
       font-weight: 400;
       font-size: 2em;
+    }
+
+    button {
+      padding: 0 20px;
+      background-color: transparent;
+      border: none;
+      height: 100%;
+      color: white;
+      cursor: pointer;
+
+      margin-left: 10px;
+
+      &:hover {
+        background-color: white;
+        color: rgb(3, 144, 252);
+      }
     }
   }
 }

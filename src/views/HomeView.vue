@@ -4,8 +4,18 @@ import TestThing from '../components/TestThing.vue'
 </script>
 
 <template>
-  <main>
-    <h2>Please select a subreddit to view</h2>
-    <!-- <TestThing /> -->
-  </main>
+  <section>
+    <h2 style="color: lightgrey">Please select a subreddit to view</h2>
+  </section>
 </template>
+
+<style scoped>
+section { 
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+</style>
