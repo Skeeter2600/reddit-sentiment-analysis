@@ -13,8 +13,8 @@ headers = {
 
 # reddit API config
 reddit = praw.Reddit(
-    client_id=os.environ["REDDIT_CLIENT_ID"],
-    client_secret=os.environ["REDDIT_CLIENT_SECRET"],
+    client_id="lqw-jyMMlY2h_czcIotjZg",
+    client_secret="fNERJaysCcVXz1VHt1je-VcziegvFA",
     user_agent="dev",
 )
 

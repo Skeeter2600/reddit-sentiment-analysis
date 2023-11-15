@@ -132,22 +132,6 @@
         }
       ]
     },
-    "AMPLIFY_function_PostsAPILambda_redditClientId": {
-      "usedBy": [
-        {
-          "category": "function",
-          "resourceName": "PostsAPILambda"
-        }
-      ]
-    },
-    "AMPLIFY_function_PostsAPILambda_redditClientSecret": {
-      "usedBy": [
-        {
-          "category": "function",
-          "resourceName": "PostsAPILambda"
-        }
-      ]
-    },
     "AMPLIFY_function_PostsAPILambda_s3Key": {
       "usedBy": [
         {

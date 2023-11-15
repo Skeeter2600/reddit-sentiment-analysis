@@ -10,14 +10,5 @@
       ]
     }
   },
-  "environmentVariableList": [
-    {
-      "cloudFormationParameterName": "redditClientId",
-      "environmentVariableName": "REDDIT_CLIENT_ID"
-    },
-    {
-      "cloudFormationParameterName": "redditClientSecret",
-      "environmentVariableName": "REDDIT_CLIENT_SECRET"
-    }
-  ]
+  "environmentVariableList": []
 }
