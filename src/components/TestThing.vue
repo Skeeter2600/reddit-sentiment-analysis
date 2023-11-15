@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import { ref } from 'vue'
-import { API } from 'aws-amplify'
-import type { Post } from '@/models/post.model'
+import { ref } from 'vue';
+import { API } from 'aws-amplify';
+import type { Post } from '@/models/post.model';
 
-const topic = ref('')
-const subreddit = ref('')
-const posts = ref<Post[]>([])
+const topic = ref('');
+const subreddit = ref('');
+const posts = ref<Post[]>([]);
 
 async function get() {
   try {
@@ -14,13 +14,13 @@ async function get() {
         topic: topic.value,
         subreddit: subreddit.value
       }
-    })
+    });
 
-    posts.value = response as Post[]
+    posts.value = response as Post[];
 
-    console.log(response)
+    console.log(response);
   } catch (error) {
-    console.error(error)
+    console.error(error);
   }
 }
 </script>

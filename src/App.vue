@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import SubredditBar from './components/SubredditBar.vue';
 import { Authenticator, useAuthenticator } from '@aws-amplify/ui-vue';
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
 import '@progress/kendo-theme-default/dist/all.css';
+import { API } from 'aws-amplify';
 
 const showAuthBox = ref(false);
 const auth = useAuthenticator();
@@ -26,6 +27,20 @@ function signOut() {
   auth.signOut();
   refresh.value++;
 }
+
+function logIn() {
+  if (auth.authStatus === 'authenticated') {
+    try {
+      API.post('RedditSentimentAPI', '/users', {
+        queryStringParameters: {
+          email: auth.user.attributes.email
+        }
+      });
+    } catch (ex) {
+      // Already have an entry in the table
+    }
+  }
+}
 </script>
 
 <template>
@@ -45,8 +60,11 @@ function signOut() {
   <main :key="refresh">
     <header>
       <h1>Dashboard</h1>
-      <h3 v-if="auth.user?.username">{{ auth.user?.attributes?.email }}</h3>
-      <button v-if="auth.authStatus === 'authenticated'" @click="signOut">Sign Out</button>
+      <h3 v-if="auth.user?.username">{{ auth.user?.username }}</h3>
+      <button v-if="auth.authStatus === 'authenticated'" @click="signOut">
+        {{ logIn() }}
+        Sign Out
+      </button>
       <button v-else @click="showAuthModal">Sign In</button>
     </header>
 
