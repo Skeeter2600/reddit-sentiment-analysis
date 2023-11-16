@@ -20,7 +20,7 @@ def handler(event, context):
 
     try:
         table.put_item(
-            Item={"email": email},
+            Item={"email": email, "topics": []},
             ConditionExpression="attribute_not_exists(email)",
         )
     except Exception as e:
