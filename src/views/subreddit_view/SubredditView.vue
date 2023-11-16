@@ -58,10 +58,16 @@ try {
 }
 
 const tabs = ref<TabStripTabProperties[]>([
-  ...topics.value.map((x) => ({
-    title: x.topic,
-    content: x.topic
-  })),
+  ...topics.value
+    .filter((x: Topic) => {
+      if (x.subreddit == props.subreddit) {
+        return x;
+      }
+    })
+    .map((x) => ({
+      title: x.topic,
+      content: x.topic
+    })),
   { title: 'Add New Topic', content: 'AddNewTopic' }
 ]);
 
