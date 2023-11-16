@@ -36,7 +36,6 @@ function analyzeSentiments(): { [key: string]: number } {
   const sentiments: { [key: string]: number } = {};
 
   for (const post of posts.value) {
-    console.log(post.sentiment);
     const sentiment = getSentimentString(post.sentiment);
     if (sentiment) {
       if (!sentiments[sentiment]) {
@@ -55,46 +54,62 @@ const items = posts.value.map((x) => ({
   content: x.title
 }));
 
+function getSentimentColor(sentiment: string): string {
+  if (sentiment === 'Positive') {
+    return 'rgb(0, 255, 64)'; // green
+  }
+  if (sentiment === 'Negative') {
+    return 'red';
+  }
+  if (sentiment === 'Neutral') {
+    return 'rgb(255, 251, 0)'; // yellow
+  }
+
+  return '#ccc'; // off-white
+}
+
 const sentiments = analyzeSentiments();
 const pieData = Object.keys(sentiments).map((sentiment) => ({
   category: sentiment,
-  value: sentiments[sentiment]
+  value: sentiments[sentiment],
+  color: getSentimentColor(sentiment)
 }));
 </script>
 
 <template>
-  <div v-if="posts.length === 0">
+  <!-- <div v-if="posts.length === 0">
     <h2>No posts matching this topic yet, check back later!</h2>
   </div>
-  <div v-else>
-    <h2>Analysis</h2>
+  <div v-else> -->
+  <h2>Analysis</h2>
 
-    <Chart>
-      <ChartTitle text="Sentiment Analysis" />
-      <ChartLegend :position="'bottom'" />
-      <ChartSeries>
-        <ChartSeriesItem
-          :type="'pie'"
-          :data-items="pieData"
-          :field="'value'"
-          :category-field="'category'"
-          :labels="{ visible: true }"
-        />
-      </ChartSeries>
-    </Chart>
+  <Chart>
+    <ChartTitle text="Sentiment Analysis" />
+    <ChartLegend :position="'bottom'" />
+    <ChartSeries>
+      <ChartSeriesItem
+        type="pie"
+        :data-items="pieData"
+        field="value"
+        category-field="category"
+        color-field="color"
+        :labels="{ visible: true }"
+      />
+    </ChartSeries>
+  </Chart>
 
-    <h2>All posts</h2>
+  <h2>All posts</h2>
 
-    <PanelBar expand-mode="multiple" :items="items">
-      <template v-for="post in posts" v-slot:[post.title] :key="post.title">
-        <div class="wrapper">
-          <p v-for="text in post.text.split('\n')" :key="text">
-            {{ text }}
-          </p>
-        </div>
-      </template>
-    </PanelBar>
-  </div>
+  <PanelBar expand-mode="multiple" :items="items">
+    <template v-for="post in posts" v-slot:[post.title] :key="post.title">
+      <div class="wrapper">
+        <p v-for="text in post.text.split('\n')" :key="text">
+          {{ text }}
+        </p>
+      </div>
+    </template>
+  </PanelBar>
+  <!-- </div> -->
 </template>
 
 <style>
