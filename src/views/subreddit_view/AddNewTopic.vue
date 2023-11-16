@@ -39,6 +39,14 @@ async function submitTopic() {
       }
     });
 
+    await API.post('RedditSentimentAPI', '/posts', {
+      queryStringParameters: {
+        topic: value,
+        subreddit: props.subreddit,
+        limit: 10
+      }
+    });
+
     emits('done', {
       subreddit: props.subreddit,
       topic: value

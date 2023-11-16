@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import type { Topic } from '@/models/topic.model';
 import { useAuthenticator } from '@aws-amplify/ui-vue';
-import { API } from 'aws-amplify';
+import { API, Auth } from 'aws-amplify';
 import { ref } from 'vue';
 import { Dialog, DialogActionsBar } from '@progress/kendo-vue-dialogs';
 import { Button } from '@progress/kendo-vue-buttons';
@@ -9,7 +9,9 @@ import { Button } from '@progress/kendo-vue-buttons';
 const auth = useAuthenticator();
 
 const subreddits = ref<string[]>([]);
+
 try {
+  await Auth.currentAuthenticatedUser()
   subreddits.value = (
     await API.get('RedditSentimentAPI', '/topics', {
       queryStringParameters: {
@@ -52,7 +54,15 @@ async function addSubreddit() {
     queryStringParameters: {
       email: auth.user.attributes.email,
       topic: topicValue,
-      subreddit
+      subreddit: subreddit
+    }
+  });
+
+  await API.post('RedditSentimentAPI', '/posts', {
+    queryStringParameters: {
+      topic: topicValue,
+      subreddit: subreddit,
+      limit: 10
     }
   });
 
