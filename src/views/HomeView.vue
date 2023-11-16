@@ -1,5 +1,4 @@
-<script setup lang="ts">
-</script>
+<script setup lang="ts"></script>
 
 <template>
   <section>
@@ -8,9 +7,8 @@
 </template>
 
 <style scoped>
-section { 
-  width: 100%;
-  height: 100%;
+section {
+  flex: 1;
   display: flex;
   flex-direction: column;
   justify-content: center;

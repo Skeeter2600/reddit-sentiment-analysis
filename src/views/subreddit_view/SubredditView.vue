@@ -44,13 +44,18 @@ function onSelect(e: { selected: number }) {
 //   })
 // );
 
-const topics = ref<Topic[]>(
-  await API.get('RedditSentimentAPI', '/topics', {
+const topics = ref<Topic[]>([]);
+
+try {
+  topics.value = await API.get('RedditSentimentAPI', '/topics', {
     queryStringParameters: {
       email: auth.user?.attributes?.email
     }
-  })
-);
+  });
+} catch (ex) {
+  console.error(ex);
+  topics.value = [];
+}
 
 const tabs = ref<TabStripTabProperties[]>([
   ...topics.value.map((x) => ({

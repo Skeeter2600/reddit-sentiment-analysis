@@ -16,39 +16,6 @@ const emits = defineEmits<{
 }>();
 
 const topic = ref('');
-
-// Simulate network request
-
-// {
-//       "email": None, "topic": None, "subreddit": None
-// }
-
-/*
-"paths": {
-    "/topics": {
-      "name": "/topics",
-      "lambdaFunction": "TopicsAPILambda",
-      "permissions": {
-        "setting": "open"
-      }
-    },
-    "/posts": {
-      "name": "/posts",
-      "lambdaFunction": "PostsAPILambda",
-      "permissions": {
-        "setting": "open"
-      }
-    },
-    "/users": {
-      "name": "/users",
-      "lambdaFunction": "UsersAPILambda",
-      "permissions": {
-        "setting": "open"
-      }
-    }
-  }
-*/
-
 const error = ref('');
 
 async function submitTopic() {
@@ -85,11 +52,41 @@ async function submitTopic() {
 
 <template>
   <form action="" @submit.prevent="submitTopic">
-    <label>Add a new topic for {{ subreddit }}</label>
+    <label for="topic">Add a new topic for r/{{ subreddit }}</label>
+    <input
+      type="text"
+      placeholder="Your awesome topic"
+      id="topic"
+      @input="error = ''"
+      v-model="topic"
+    />
     <p v-if="error" style="color: red">{{ error }}</p>
-    <input type="text" @input="error = ''" v-model="topic" />
     <input type="submit" value="Add Topic" />
   </form>
 </template>
 
-<style scoped></style>
+<style scoped lang="scss">
+label {
+  display: block;
+  font-size: 1.4em;
+}
+input {
+  display: block;
+  padding: 4px 3px;
+  min-width: 300px;
+  margin: 10px;
+}
+input[type='submit'] {
+  border: none;
+  padding: 8px 6px;
+  cursor: pointer;
+  background-color: rgb(3, 144, 252);
+  color: white;
+
+  &:hover {
+    background-color: white;
+    color: rgb(3, 144, 252);
+    outline: thin solid rgb(3, 144, 252);
+  }
+}
+</style>

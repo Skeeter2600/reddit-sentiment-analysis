@@ -19,6 +19,7 @@
     "@progress/kendo-svg-icons": "^2.0.0",
     "@progress/kendo-theme-default": "^7.0.2",
     "@progress/kendo-vue-animation": "^4.0.0",
+    "@progress/kendo-vue-charts": "^4.1.0",
     "@progress/kendo-vue-data-tools": "^4.0.0",
     "@progress/kendo-vue-dateinputs": "^4.0.0",
     "@progress/kendo-vue-dropdowns": "^4.0.0",
