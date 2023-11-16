@@ -37,7 +37,7 @@
     "resourceName": "swen514",
     "sharedId": "5a5909e3",
     "serviceName": "Cognito",
-    "useDefault": "default",
+    "useDefault": "manual",
     "authRoleArn": {
       "Fn::GetAtt": [
         "AuthRole",
@@ -52,9 +52,32 @@
     },
     "breakCircularDependency": true,
     "useEnabledMfas": true,
-    "dependsOn": [],
+    "dependsOn": [
+      {
+        "category": "function",
+        "resourceName": "swen514PostConfirmation",
+        "triggerProvider": "Cognito",
+        "attributes": [
+          "Arn",
+          "Name"
+        ]
+      }
+    ],
     "hostedUI": false,
     "userPoolGroupList": [],
-    "authProviders": []
+    "userPoolGroups": false,
+    "adminQueries": false,
+    "triggers": {
+      "PostConfirmation": [
+        "custom"
+      ]
+    },
+    "parentStack": {
+      "Ref": "AWS::StackId"
+    },
+    "permissions": [],
+    "authProviders": [],
+    "thirdPartyAuth": false,
+    "authTriggerConnections": "[\n  {\n    \"triggerType\": \"PostConfirmation\",\n    \"lambdaFunctionName\": \"swen514PostConfirmation\"\n  }\n]"
   }
 }
