@@ -11,13 +11,12 @@ import {
   ChartSeriesItem,
   ChartTitle
 } from '@progress/kendo-vue-charts';
+// Needed for kendo charts
 import 'hammerjs';
 
 const props = defineProps<{
   topic: Topic;
 }>();
-
-// Simulate network request
 
 const posts = ref<Post[]>(
   await API.get('RedditSentimentAPI', '/posts', {
@@ -28,41 +27,17 @@ const posts = ref<Post[]>(
   })
 );
 
-if (posts.value.length === 0) {
-  // Fill with fake posts for debug
-  posts.value = [
-    {
-      postId: '123',
-      subreddit: 'asdf',
-      text: 'What a cool sample post!\nWow this is so cool!',
-      title: 'Test post!',
-      topics: [],
-      sentiment: 'Positive'
-    },
-    {
-      postId: '124',
-      subreddit: 'asdf',
-      text: 'Super duper angry!',
-      title: 'Mad post!',
-      topics: [],
-      sentiment: 'Negative'
-    },
-    {
-      postId: '12',
-      subreddit: 'asdf',
-      text: 'Oooo spooky!',
-      title: 'Unknown post!',
-      topics: [],
-      sentiment: undefined
-    }
-  ];
+function getSentimentString(sentiment: string | undefined): string {
+  const lower = sentiment?.toLowerCase() ?? 'unknown';
+  return lower[0].toUpperCase() + lower.substring(1);
 }
 
 function analyzeSentiments(): { [key: string]: number } {
   const sentiments: { [key: string]: number } = {};
 
   for (const post of posts.value) {
-    const sentiment = post.sentiment ?? 'Unknown';
+    console.log(post.sentiment);
+    const sentiment = getSentimentString(post.sentiment);
     if (sentiment) {
       if (!sentiments[sentiment]) {
         sentiments[sentiment] = 0;
@@ -76,7 +51,7 @@ function analyzeSentiments(): { [key: string]: number } {
 }
 
 const items = posts.value.map((x) => ({
-  title: `${x.title} (${x.sentiment ?? 'Unknown'})`,
+  title: `${x.title} (${getSentimentString(x.sentiment)})`,
   content: x.title
 }));
 
@@ -88,33 +63,38 @@ const pieData = Object.keys(sentiments).map((sentiment) => ({
 </script>
 
 <template>
-  <h2>Analysis</h2>
+  <div v-if="posts.length === 0">
+    <h2>No posts matching this topic yet, check back later!</h2>
+  </div>
+  <div v-else>
+    <h2>Analysis</h2>
 
-  <Chart>
-    <ChartTitle text="Sentiment Analysis" />
-    <ChartLegend :position="'bottom'" />
-    <ChartSeries>
-      <ChartSeriesItem
-        :type="'pie'"
-        :data-items="pieData"
-        :field="'value'"
-        :category-field="'category'"
-        :labels="{ visible: true }"
-      />
-    </ChartSeries>
-  </Chart>
+    <Chart>
+      <ChartTitle text="Sentiment Analysis" />
+      <ChartLegend :position="'bottom'" />
+      <ChartSeries>
+        <ChartSeriesItem
+          :type="'pie'"
+          :data-items="pieData"
+          :field="'value'"
+          :category-field="'category'"
+          :labels="{ visible: true }"
+        />
+      </ChartSeries>
+    </Chart>
 
-  <h2>All posts</h2>
+    <h2>All posts</h2>
 
-  <PanelBar expand-mode="multiple" :items="items">
-    <template v-for="post in posts" v-slot:[post.title] :key="post.title">
-      <div class="wrapper">
-        <p v-for="text in post.text.split('\n')" :key="text">
-          {{ text }}
-        </p>
-      </div>
-    </template>
-  </PanelBar>
+    <PanelBar expand-mode="multiple" :items="items">
+      <template v-for="post in posts" v-slot:[post.title] :key="post.title">
+        <div class="wrapper">
+          <p v-for="text in post.text.split('\n')" :key="text">
+            {{ text }}
+          </p>
+        </div>
+      </template>
+    </PanelBar>
+  </div>
 </template>
 
 <style>

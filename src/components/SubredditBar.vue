@@ -11,21 +11,31 @@ const auth = useAuthenticator();
 const subreddits = ref<string[]>([]);
 
 try {
-  await Auth.currentAuthenticatedUser()
-  subreddits.value = (
+  await Auth.currentAuthenticatedUser();
+
+  const subredditSet = new Set<string>();
+
+  for (const sub of (
     await API.get('RedditSentimentAPI', '/topics', {
       queryStringParameters: {
         email: auth.user.attributes.email
       }
     })
-  ).map((x: Topic) => x.subreddit);
+  ).map((x: Topic) => x.subreddit)) {
+    subredditSet.add(sub);
+  }
+
+  for (const sub of subredditSet) {
+    subreddits.value.push(sub);
+  }
 } catch (ex) {
-  subreddits.value = [];
+  console.error(ex);
 }
 
 const subredditTyped = ref('');
 const topic = ref('');
 const error = ref('');
+const addingSubreddit = ref(false);
 
 async function addSubreddit() {
   if (!auth?.user?.attributes?.email) {
@@ -50,6 +60,8 @@ async function addSubreddit() {
     return;
   }
 
+  addingSubreddit.value = true;
+
   await API.post('RedditSentimentAPI', '/topics', {
     queryStringParameters: {
       email: auth.user.attributes.email,
@@ -66,6 +78,7 @@ async function addSubreddit() {
     }
   });
 
+  addingSubreddit.value = false;
   addSubredditDialog.value = false;
 
   subreddits.value.push(subreddit);
@@ -100,8 +113,8 @@ function toggleDialog() {
     <input type="text" v-model="topic" id="topic" />
     <p v-if="error" style="color: red">{{ error }}</p>
     <dialog-actions-bar>
-      <Button @click="toggleDialog">Cancel</Button>
-      <Button @click="addSubreddit">Add</Button>
+      <Button @click="toggleDialog" :disabled="addingSubreddit">Cancel</Button>
+      <Button @click="addSubreddit" :disabled="addingSubreddit">Add</Button>
     </dialog-actions-bar>
   </Dialog>
 </template>

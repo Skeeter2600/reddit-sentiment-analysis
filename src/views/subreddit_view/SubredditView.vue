@@ -25,25 +25,6 @@ function onSelect(e: { selected: number }) {
   selected.value = e.selected;
 }
 
-// Simulate network request
-
-// const topics = ref(
-//   await new Promise<Topic[]>((resolve) => {
-//     setTimeout(() => {
-//       resolve([
-//         {
-//           topic: 'Topic A',
-//           subreddit: props.subreddit
-//         },
-//         {
-//           topic: 'Topic B',
-//           subreddit: props.subreddit
-//         }
-//       ]);
-//     }, 1000);
-//   })
-// );
-
 const topics = ref<Topic[]>([]);
 
 try {
