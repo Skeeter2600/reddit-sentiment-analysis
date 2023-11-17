@@ -113,6 +113,11 @@ const pieData = Object.keys(sentiments).map((sentiment) => ({
 </template>
 
 <style>
+p {
+  margin: 10px 0;
+  line-height: 1.5em;
+}
+
 .k-animation-container.k-animation-container-relative.k-fade-enter-active {
   width: 100%;
 }

@@ -59,16 +59,12 @@ function signOut() {
   flex-direction: row;
 }
 
-h1 {
-  flex: 1;
-  font-weight: 400;
-  font-size: 2em;
-}
-
-h2 {
-  flex: 1;
-  font-weight: 400;
-  font-size: 1.5em;
+aside div {
+  h1 {
+    flex: 1;
+    font-weight: 400;
+    font-size: 1.6em;
+  }
 }
 
 main {
@@ -87,6 +83,12 @@ main {
     padding: 0 0 0 12px;
     display: flex;
     flex-direction: row;
+
+    h1 {
+      flex: 1;
+      font-weight: 400;
+      font-size: 2em;
+    }
 
     button {
       padding: 0 20px;
