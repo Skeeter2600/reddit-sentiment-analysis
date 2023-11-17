@@ -43,12 +43,12 @@ def handler(event, context):
                 ExpressionAttributeValues={":sentiment_val": sentiment},
             )
 
-            return {
-                "statusCode": 200,
-                "headers": {
-                    "Access-Control-Allow-Headers": "*",
-                    "Access-Control-Allow-Origin": "*",
-                    "Access-Control-Allow-Methods": "OPTIONS,POST,GET",
-                },
-                "body": json.dumps(event),
-            }
+    return {
+        "statusCode": 200,
+        "headers": {
+            "Access-Control-Allow-Headers": "*",
+            "Access-Control-Allow-Origin": "*",
+            "Access-Control-Allow-Methods": "OPTIONS,POST,GET",
+        },
+        "body": json.dumps(event),
+    }
