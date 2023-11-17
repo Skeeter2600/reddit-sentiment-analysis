@@ -7,10 +7,6 @@ import '@progress/kendo-theme-default/dist/all.css';
 const showAuthBox = ref(false);
 const auth = useAuthenticator();
 
-function goBack() {
-  window.history.back();
-}
-
 function showAuthModal() {
   showAuthBox.value = true;
 }
@@ -37,7 +33,7 @@ function signOut() {
 
   <aside :key="refresh">
     <div class="bar">
-      <button @click="goBack">&#x2190;</button>
+      <h1>Subreddits</h1>
     </div>
 
     <Suspense>
@@ -63,6 +59,18 @@ function signOut() {
   flex-direction: row;
 }
 
+h1 {
+  flex: 1;
+  font-weight: 400;
+  font-size: 2em;
+}
+
+h2 {
+  flex: 1;
+  font-weight: 400;
+  font-size: 1.5em;
+}
+
 main {
   display: flex;
   flex-direction: column;
@@ -79,12 +87,6 @@ main {
     padding: 0 0 0 12px;
     display: flex;
     flex-direction: row;
-
-    h1 {
-      flex: 1;
-      font-weight: 400;
-      font-size: 2em;
-    }
 
     button {
       padding: 0 20px;
