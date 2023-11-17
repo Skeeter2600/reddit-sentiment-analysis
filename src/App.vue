@@ -33,7 +33,7 @@ function signOut() {
 
   <aside :key="refresh">
     <div class="bar">
-      <h1>Subreddits</h1>
+      <h1 style="margin: auto; padding-left: 10px">Subreddits</h1>
     </div>
 
     <Suspense>
